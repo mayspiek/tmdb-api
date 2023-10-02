@@ -32,8 +32,7 @@
             <p>{artista.id}</p>
             <p>{artista.name}</p>
             <img
-                src="
-            https://image.tmdb.org/t/p/w185/{artista.profile_path}"
+                src="https://image.tmdb.org/t/p/w185/{artista.profile_path}"
                 alt=""
             />
             <p>{artista.biography}</p>

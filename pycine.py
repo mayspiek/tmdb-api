@@ -58,11 +58,11 @@ async def filmes_populares(limit=3):
                        "image": f"https://image.tmdb.org/t/p/w185{movie['poster_path']}"})
     return filtro
 
-@app.get("/artista/{id}")
-async def get_artista(id: int):
-    data = get_json("/person", f"/{id}?language=en-US")
-    print(data)
-    return data
+# @app.get("/artista/{id}")
+# async def get_artista(id: int):
+#     data = get_json("/person", f"/{id}?language=en-US")
+#     print(data)
+#     return data
 
 @app.get("/artistas/{name}")
 async def get_artista(name: str):
@@ -80,9 +80,7 @@ async def get_artista(name: str):
             "name": artist_id['name'],
             'rank': artist_id['popularity'],
             'biography': artist_id['biography'],
-            "image": f"https://image.tmdb.org/t/p/w185{artist_id['profile_path']}"
+            "profile_path": artist_id['profile_path']
         })
-        print
-        print(filtro)
-        filtro.sort(reverse=True, key=lambda artist:artist['rank'])
-        return filtro
+
+    return filtro
