@@ -66,22 +66,23 @@ async def get_artista(id: int):
 
 @app.get("/artistas/{name}")
 async def get_artista(name: str):
-    """ 
-    obtem lista de artista pelo nome e popularidade 
-    """
-    data = get_json(
+    artist_name = get_json(
         "/search/person", f"?query={name}&language=en-US"
     )
-    results = data['results']
+
+    results = artist_name['results']
     filtro = []
+
     for artist in results:
+        artist_id = get_json("/person", f"/{artist['id']}?language=en-US")
         filtro.append({
-            'id': artist['id'],
-            "name": artist['name'],
-            'rank': artist['popularity'],
-            "image": f"https://image.tmdb.org/t/p/w185{artist['profile_path']}"
+            'id': artist_id['id'],
+            "name": artist_id['name'],
+            'rank': artist_id['popularity'],
+            'biography': artist_id['biography'],
+            "image": f"https://image.tmdb.org/t/p/w185{artist_id['profile_path']}"
         })
-    # ordenar lista de artistas (filtro) pelo atributo rank
+        print
+        print(filtro)
         filtro.sort(reverse=True, key=lambda artist:artist['rank'])
-     # return data
         return filtro
