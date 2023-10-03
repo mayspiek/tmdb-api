@@ -4,6 +4,7 @@
 	import Artista from "./Artista.svelte";
 	import Movie from "./Movie.svelte";
 	import Nav from "./Nav.svelte";
+	import User from "./User.svelte";
 </script>
 
 <Nav bind:menu/>
@@ -12,5 +13,5 @@
 {:else if menu === 2}
 		<Artista/>
 {:else if menu === 3}
-		<Artista/>
+		<User/>
 {/if}
