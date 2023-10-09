@@ -81,3 +81,5 @@ def get_tmdb_genres(lang="us"):
 
 if __name__ == "__main__":
     filmes_populares()
+    
+# uvicorn pycine:app --reload

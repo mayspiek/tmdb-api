@@ -2,8 +2,6 @@
     let promise = "";
     let nameArtist = "";
     async function getArtista(name) {
-        print(nameArtist)
-        print(promise)
         // faz um request GET para endpoint /filmes
         const res = await fetch(`http://localhost:8000/artistas/${name}`);
         const text = await res.json();
@@ -21,7 +19,7 @@
 <div class="content">
     <form action="">
         <input bind:value={nameArtist} type="text" />
-        <button on:click={() => handleClick()}> Get Artistas </button>
+        <button on:click={handleClick}> Get Artistas </button>
     </form>
 
     {#await promise}

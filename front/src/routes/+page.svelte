@@ -1,7 +1,6 @@
 <script>
-	let menu = 2
-	let appName = "Front"
-	import Artista from "./Artista.svelte";
+	let menu;
+    import Artista from "./Artista.svelte";
 	import Movie from "./Movie.svelte";
 	import Nav from "./Nav.svelte";
 	import User from "./User.svelte";

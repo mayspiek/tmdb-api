@@ -55,14 +55,7 @@ async def filmes_populares():
     for movie in results:
         filtro.append({"title": movie['original_title'],
                        "image": f"https://image.tmdb.org/t/p/w185{movie['poster_path']}"})
-    print(filtro)
     return filtro
-
-# @app.get("/artista/{id}")
-# async def get_artista(id: int):
-#     data = get_json("/person", f"/{id}?language=en-US")
-#     print(data)
-#     return data
 
 @app.get("/artistas/{name}")
 async def get_artista(name: str):
@@ -82,7 +75,7 @@ async def get_artista(name: str):
             'biography': artist_id['biography'],
             "profile_path": artist_id['profile_path']
         })
-
+    filtro.sort(reverse=True, key=lambda artist:artist['rank'])
     return filtro
 
 # USERS
@@ -106,7 +99,7 @@ def get_db():
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email, name=user.name)
+    db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db=db, user=user)
