@@ -11,3 +11,12 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     
 # filmes favoritos 
+class Movie(Base):
+    __tablename__ = "movies"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tmdb_id = Column(Integer)
+    title = Column(String)
+    image = Column(String)
+    
+    # user_id = Column(Integer, ForeignKey("users.id"))

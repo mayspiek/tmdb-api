@@ -13,6 +13,18 @@ def get_user_by_email(db: Session, email: str):
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
+def update_user(db: Session, user_id: int, user: schemas.UserCreate):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    db_user.name = user.name
+    db_user.email = user.email
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+def delete_user(db: Session, user_id: int):
+    db.query(models.User).filter(models.User.id == user_id).delete()
+    db.commit()
+    return user_id
 
 def create_user(db: Session, user: schemas.UserCreate):
     fake_hashed_password = user.password + "notreallyhashed"
