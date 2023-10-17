@@ -1,4 +1,5 @@
 <script>
+    import '../globals.css'
     let promise = "";
     let nameArtist = "";
     async function getArtista(name) {
@@ -16,7 +17,7 @@
     }
 </script>
 
-<div class="content">
+<div class="content flexCenter">
     <form action="">
         <input bind:value={nameArtist} type="text" />
         <button on:click={handleClick}> Get Artistas </button>
@@ -27,6 +28,7 @@
     {:then artistas}
         <h1>Lista de Artistas</h1>
         {#each artistas as artista}
+        <div class="artist boxBorder flexCenter">
             <p>{artista.id}</p>
             <p>{artista.name}</p>
             <img
@@ -34,6 +36,7 @@
                 alt=""
             />
             <p>{artista.biography}</p>
+        </div>
         {/each}
     {:catch error}
         <p style="color: red">{error.message}</p>
@@ -41,9 +44,10 @@
 </div>
 
 <style>
-    .content {
-        display: flex;
-        align-items: center;
+    .content, .artist {
         flex-direction: column;
+    }
+    .artist{
+        width: 60%;
     }
 </style>

@@ -1,4 +1,5 @@
-<script>
+<script> 
+    import '../globals.css'
     let resposta = "";
     async function sendForm(e) {
         // envia o formulario no formato json
@@ -38,7 +39,7 @@
             autocomplete="off"
         />
         <input
-            type="text"
+            type="password"
             name="password"
             placeholder="password"
             required
@@ -55,18 +56,6 @@
         gap: 5px;
         row-gap: 10px;
         width: 60%;
-    }
-    form.crud input {
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .crud button {
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #ccc;
-        cursor: pointer;
     }
     .container{
         display: flex;

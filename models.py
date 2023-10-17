@@ -19,4 +19,3 @@ class Movie(Base):
     title = Column(String)
     image = Column(String)
     
-    # user_id = Column(Integer, ForeignKey("users.id"))
