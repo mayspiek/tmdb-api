@@ -1,9 +1,9 @@
-<script>
-    import Artista from "./Artista.svelte";
-	import Movie from "./Movie.svelte";
-	import Nav from "./Nav.svelte";
-	import User from "./User.svelte";
-    import UserList from "./UserList.svelte";
+<!-- <script>
+    import Artista from "./Artist/+page.svelte";
+	import Movie from "./Movie/+page.svelte";
+	import Nav from "./+layout.svelte";
+	import User from "./User/User.svelte";
+    import UserList from "./User/+page.svelte";
 	
     let menu = 1; // Defina o valor inicial do menu
 
@@ -23,4 +23,4 @@
 {:else if menu === 4}
     <UserList />
 {/if}
-
+ -->

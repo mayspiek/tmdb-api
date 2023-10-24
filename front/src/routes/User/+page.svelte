@@ -1,5 +1,5 @@
-<script> 
-    import '../globals.css'
+<script>
+    import "../../globals.css";
     let resposta = "";
     async function sendForm(e) {
         // envia o formulario no formato json
@@ -14,12 +14,11 @@
         });
         const json = await res.json();
         resposta = JSON.stringify(json);
-        e.target.reset();
     }
-</script>
 
+</script>
 <div class="container">
-    <h2>New user</h2>
+    <h2>Novo Usuário</h2>
 
     <p>{resposta}</p>
 
@@ -49,6 +48,40 @@
     </form>
 </div>
 
+{#if resposta.method == "PUT"}
+<div class="container">
+    <h2>Atualizar Usuário</h2>
+
+    <p>{resposta}</p>
+
+    <form class="crud" on:submit|preventDefault={sendForm}>
+        <input
+            value={user.name}
+            type="text"
+            name="name"
+            placeholder="User name"
+            required
+            autocomplete="off"
+        />
+        <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            required
+            autocomplete="off"
+        />
+        <input
+            type="password"
+            name="password"
+            placeholder="password"
+            required
+            autocomplete="off"
+        />
+        <button type="submit">Atualizar Usuário </button>
+    </form>
+</div>
+{/if}
+
 <style>
     form.crud {
         display: grid;
@@ -57,7 +90,7 @@
         row-gap: 10px;
         width: 60%;
     }
-    .container{
+    .container {
         display: flex;
         flex-direction: column;
         align-items: center;

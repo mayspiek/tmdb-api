@@ -26,7 +26,8 @@
             <div class="movies boxBorder">
                 <p>{filme.title}</p>
                 <img src={filme.image} alt="cover" />
-                <button>Favoritar</button>
+                <!-- FAVORITAR FILME -->
+                <button type="submit">Favoritar</button>
             </div>
         {/each}
     </div>

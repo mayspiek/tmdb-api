@@ -1,5 +1,5 @@
 <script>
-    import '../globals.css';
+    import '../../globals.css';
     let promise = getUsers();
     async function getUsers() {
         // envia o formulario no formato json
@@ -37,7 +37,7 @@
                         {user.name}
                     </p>
                     <p>
-                        <span>E-Ma  il: </span>
+                        <span>E-Mail: </span>
                         {user.email}
                     </p>
                 </div>
@@ -54,7 +54,7 @@
                                 )
                                     .then((response) => response.json())
                                     .then((data) => {
-                                        console.log("Success:", data);
+                                        alert(`"${data.name}" Deletado com sucesso`, 'success');
                                         handleClick();
                                     })
                                     .catch((error) => {
@@ -65,7 +65,6 @@
                     >
                         Delete
                     </button>
-
                     <button
                         on:click={() => {
                             fetch(`http://localhost:8000/users/${user.id}`, {
@@ -73,16 +72,12 @@
                                 headers: {
                                     "Content-Type": "application/json",
                                 },
-                                body: JSON.stringify({
-                                    name: "mayara  ",
-                                    email: "mayazinha",
-                                    password: "teste",
-                                }),
+
                             })
                                 .then((response) => response.json())
                                 .then((data) => {
                                     console.log("Success:", data);
-                                    handleClick();
+                                    window.location.href = `http://localhost:5000/users/${user.id}`;
                                 })
                                 .catch((error) => {
                                     console.error("Error:", error);

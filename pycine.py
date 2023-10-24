@@ -10,6 +10,7 @@ from fastapi.middleware.cors import (
 origins = [
     "http://localhost",
     "http://localhost:5173",
+    "http://localhost:5173/UserList"
 ]
 app.add_middleware(
     CORSMiddleware,
