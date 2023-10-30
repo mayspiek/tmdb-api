@@ -11,5 +11,12 @@ class User(UserBase):
     id: int
     is_active: bool
 
+class Movie(BaseModel):
+    id: int
+    tmdb_id: int
+    title: str
+    image: str
+
+
     class Config:
         orm_mode = True

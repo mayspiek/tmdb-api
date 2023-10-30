@@ -13,6 +13,31 @@
     export function handleClick() {
         promise = getFilmes();
     }
+
+    async function favoritarFilme(tmdb_id) {
+        try {
+            const res = await fetch(`http://localhost:8000/favorites/${tmdb_id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // Se necessário, adicione um corpo JSON com os dados do filme
+                body: JSON.stringify({
+                    tmdb_id: tmdb_id,
+                    // Outros campos, se necessário
+                }),
+            });
+            if (res.ok) {
+                alert("Filme favoritado com sucesso!");
+            } else {
+                alert("Falha ao favoritar o filme");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Ocorreu um erro ao favoritar o filme.");
+        }
+    }
+
 </script>
 <div class="title flexCenter">
     <button on:click={handleClick}> Get filmes </button>
@@ -24,10 +49,12 @@
     <div class="content flexCenter">
         {#each filmes as filme}
             <div class="movies boxBorder">
+                <p>{filme.tmdb_id}</p>
                 <p>{filme.title}</p>
                 <img src={filme.image} alt="cover" />
                 <!-- FAVORITAR FILME -->
-                <button type="submit">Favoritar</button>
+                <button on:click={() => favoritarFilme(filme.tmdb_id)}>Favoritar</button>
+
             </div>
         {/each}
     </div>

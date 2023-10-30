@@ -34,3 +34,14 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def favorite_movie(db: Session, tmdb_id: int):
+    db_movie = db.query(models.Movie).filter(models.Movie.tmdb_id == id).first()
+    if db_movie is None:
+        db_movie = models.Movie(tmdb_id=tmdb_id, id=id)
+        db.add(db_movie)
+        db.commit()
+        db.refresh(db_movie)
+    return db_movie
+
+def get_favorites(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Movie).offset(skip).limit(limit).all()

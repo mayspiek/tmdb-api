@@ -1,6 +1,7 @@
 <script>
-    import '../../globals.css';
+import "../../globals.css";
     let promise = getUsers();
+
     async function getUsers() {
         // envia o formulario no formato json
         const res = await fetch("http://localhost:8000/users");
@@ -15,10 +16,12 @@
     function handleClick() {
         promise = getUsers();
     }
+
+
 </script>
 
 <div class="content flexCenter">
-    <button on:click={handleClick}> Get filmes </button>
+    <button on:click={handleClick}> Get Users </button>
 
     {#await promise}
         <p>...waiting</p>
@@ -54,7 +57,10 @@
                                 )
                                     .then((response) => response.json())
                                     .then((data) => {
-                                        alert(`"${data.name}" Deletado com sucesso`, 'success');
+                                        alert(
+                                            `"${data.name}" Deletado com sucesso`,
+                                            "success"
+                                        );
                                         handleClick();
                                     })
                                     .catch((error) => {
@@ -65,27 +71,9 @@
                     >
                         Delete
                     </button>
-                    <button
-                        on:click={() => {
-                            fetch(`http://localhost:8000/users/${user.id}`, {
-                                method: "PUT",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-
-                            })
-                                .then((response) => response.json())
-                                .then((data) => {
-                                    console.log("Success:", data);
-                                    window.location.href = `http://localhost:5000/users/${user.id}`;
-                                })
-                                .catch((error) => {
-                                    console.error("Error:", error);
-                                });
-                        }}
-                    >
-                        Update
-                    </button>
+                    
+                    <!-- TO DO -->
+                    <button> Update </button>
                 </div>
             </div>
         {/each}
@@ -99,12 +87,12 @@
         flex-wrap: wrap;
         flex-direction: column;
     }
-    
-    .information{
+
+    .information {
         justify-content: space-between;
         width: 30%;
     }
-    span{
+    span {
         font-weight: bold;
         text-decoration: underline;
     }

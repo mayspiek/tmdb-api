@@ -10,7 +10,8 @@ from fastapi.middleware.cors import (
 origins = [
     "http://localhost",
     "http://localhost:5173",
-    "http://localhost:5173/UserList"
+    "http://localhost:5173/UserList",
+    "http://localhost:5173/Favorites",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -55,7 +56,8 @@ async def filmes_populares():
     filtro = []
     for movie in results:
         filtro.append({"title": movie['original_title'],
-                       "image": f"https://image.tmdb.org/t/p/w185{movie['poster_path']}"})
+                       "image": f"https://image.tmdb.org/t/p/w185{movie['poster_path']}",
+                       "tmdb_id": movie['id']})
     return filtro
 
 @app.get("/artistas/{name}")
@@ -85,9 +87,6 @@ from sqlalchemy.orm import Session
 import crud, models, schemas
 from database import SessionLocal, engine
 
-
-models.Base.metadata.create_all(bind=engine)
-
 # Dependency
 
 def get_db():
@@ -97,6 +96,14 @@ def get_db():
     finally:
         db.close()
 
+models.Base.metadata.create_all(bind=engine)
+@app.post("/favorites/{movie_id}", response_model=schemas.Movie)
+def favorite_movie(tmdb_id:int, db: Session = Depends(get_db)):
+    return crud.favorite_movie(db=db, tmdb_id=tmdb_id)
+
+@app.get("/favorites", response_model=list[schemas.Movie])
+def get_favorites(db: Session = Depends(get_db)):
+    return crud.get_favorites(db=db)
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
