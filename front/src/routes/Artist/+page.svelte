@@ -1,5 +1,4 @@
 <script>
-    import '../../globals.css'
     let promise = "";
     let nameArtist = "";
     async function getArtista(name) {
