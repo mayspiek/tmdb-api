@@ -11,7 +11,7 @@ origins = [
     "http://localhost",
     "http://localhost:5173",
     "http://localhost:5173/UserList",
-    "http://localhost:5173/Favorites",
+    "http://localhost:5173/favorites",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -97,15 +97,19 @@ def get_db():
         db.close()
 
 models.Base.metadata.create_all(bind=engine)
-@app.post("/favorites/{movie_id}", response_model=schemas.Movie)
-def favorite_movie(tmdb_id:int, db: Session = Depends(get_db)):
+
+## favorita o filme
+@app.post("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
+def favorite_movie(tmdb_id:int, user_id = 1, db: Session = Depends(get_db)):
     return crud.favorite_movie(db=db, tmdb_id=tmdb_id)
 
+# PEGA TODOS OS FILMES
 @app.get("/favorites", response_model=list[schemas.Movie])
 def get_favorites(db: Session = Depends(get_db)):
     return crud.get_favorites(db=db)
 
-@app.post("/users/", response_model=schemas.User)
+
+@app.post("/users", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
