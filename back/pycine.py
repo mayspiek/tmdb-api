@@ -100,14 +100,20 @@ models.Base.metadata.create_all(bind=engine)
 
 ## favorita o filme
 @app.post("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
-def favorite_movie(tmdb_id:int, user_id = 1, db: Session = Depends(get_db)):
-    return crud.favorite_movie(db=db, tmdb_id=tmdb_id)
+def favorite_movie(user_id:int, tmdb_id:int, db: Session = Depends(get_db)):
+    return crud.favorite_movie(db=db, user_id = 1, tmdb_id=tmdb_id)
 
-# PEGA TODOS OS FILMES
+# PEGA TODOS OS FILMES FAVORITADOS
 @app.get("/favorites", response_model=list[schemas.Movie])
 def get_favorites(db: Session = Depends(get_db)):
     return crud.get_favorites(db=db)
 
+## USERS ##
+
+@app.get("/users", response_model=list[schemas.User])
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    users = crud.get_users(db, skip=skip, limit=limit)
+    return users
 
 @app.post("/users", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -135,10 +141,6 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     crud.delete_user(db, user_id=user_id)
     return db_user
 
-@app.get("/users/", response_model=list[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_users(db, skip=skip, limit=limit)
-    return users
 
 
 @app.get("/users/{user_id}", response_model=schemas.User)
