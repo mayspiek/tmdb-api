@@ -1,5 +1,4 @@
 <script>
-import "../../globals.css";
     let promise = getUsers();
 
     async function getUsers() {

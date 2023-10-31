@@ -1,5 +1,4 @@
 <script>
-import "../../globals.css";
     let resposta = "";
     
     async function sendForm(e) {

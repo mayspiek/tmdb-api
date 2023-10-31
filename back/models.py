@@ -11,7 +11,7 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     
-    movies = relationship("Movie", back_populates="users")
+    movies = relationship("Movie", back_populates="user")
     
 # filmes favoritos 
 class Movie(Base):

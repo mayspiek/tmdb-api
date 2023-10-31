@@ -1,5 +1,4 @@
 <script>
-    import '../../globals.css';
     let promise = getFavorites();
     async function getFavorites(){
         const res = fetch('http://localhost:8000/favorites')
