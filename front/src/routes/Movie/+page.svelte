@@ -21,11 +21,6 @@
                 headers: {
                     "Content-Type": "application/json",
                 },
-                // Se necessário, adicione um corpo JSON com os dados do filme
-                body: JSON.stringify({
-                    tmdb_id: tmdb_id,
-                    // Outros campos, se necessário
-                }),
             });
             if (res.ok) {
                 alert("Filme favoritado com sucesso!");
