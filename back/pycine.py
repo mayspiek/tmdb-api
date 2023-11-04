@@ -101,7 +101,8 @@ models.Base.metadata.create_all(bind=engine)
 ## favorita o filme
 @app.post("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
 def favorite_movie(user_id:int, tmdb_id:int, db: Session = Depends(get_db)):
-    return crud.favorite_movie(db=db, user_id = 1, tmdb_id=tmdb_id)
+    print(tmdb_id)
+    return crud.favorite_movie(db=db, user_id = user_id, tmdb_id=tmdb_id)
 
 # PEGA TODOS OS FILMES FAVORITADOS
 @app.get("/favorites", response_model=list[schemas.Movie])
