@@ -1,7 +1,7 @@
 <script>
     let promise = getFavorites();
     async function getFavorites(){
-        const res = fetch('http://localhost:8000/favorites')
+        const res = await fetch(`http://localhost:8000/favorites/1`);
         const text = await res.json();
         if(res.ok){
             return text;
@@ -24,14 +24,23 @@
         <div>
             <p>
                 <span>ID: </span>
-                {favorite.id}
+                {favorite.movie_id}
             </p>
 
             <p>
                 <span>Title: </span>
                 {favorite.title}
             </p>
+            <p>
+                <span>Sinopse: </span>
+                {favorite.sinopse}
+            </p>
+            <p>
+                <img src="https://image.tmdb.org/t/p/w185{favorite.image}" alt="">
+            </p>
         </div>
     {/each}
+    {:catch error}
+    <p style="color: red">{error.message}</p>
     {/await}
 </div>
