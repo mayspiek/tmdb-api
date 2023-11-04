@@ -16,7 +16,7 @@
 
     async function favoritarFilme(tmdb_id) {
         try {
-            const res = await fetch(`http://localhost:8000/favorites/${tmdb_id}`, {
+            const res = await fetch(`http://localhost:8000/favorites/1/${tmdb_id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

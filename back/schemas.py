@@ -14,6 +14,7 @@ class User(UserBase):
 class Movie(BaseModel):
     id: int
     tmdb_id: int
+    user_id: int
 
 
     class Config:
