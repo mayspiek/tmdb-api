@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from typing import List
 import models, schemas
 
 
@@ -36,7 +37,6 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 def favorite_movie(db: Session, tmdb_id: int, user_id: int):
     db_movie = db.query(models.Movie).filter(models.Movie.tmdb_id == tmdb_id).first()
-    print(tmdb_id)
     if db_movie is None:
         db_movie = models.Movie(tmdb_id=tmdb_id, user_id=user_id)
         db.add(db_movie)
@@ -44,5 +44,6 @@ def favorite_movie(db: Session, tmdb_id: int, user_id: int):
         db.refresh(db_movie)
     return db_movie
 
-def get_favorites(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Movie).offset(skip).limit(limit).all()
+# List : para me retornar uma lista de filmes
+def get_favorites(db: Session, user_id: int) -> List[schemas.Movie]:
+    return db.query(models.Movie).filter(models.Movie.user_id == user_id).all()

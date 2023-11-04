@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from tmdb import get_json
+from typing import List
+
 
 app = FastAPI()
 
@@ -101,16 +103,30 @@ models.Base.metadata.create_all(bind=engine)
 ## favorita o filme
 @app.post("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
 def favorite_movie(user_id:int, tmdb_id:int, db: Session = Depends(get_db)):
-    print(tmdb_id)
     return crud.favorite_movie(db=db, user_id = user_id, tmdb_id=tmdb_id)
 
 # PEGA TODOS OS FILMES FAVORITADOS
-@app.get("/favorites", response_model=list[schemas.Movie])
-def get_favorites(db: Session = Depends(get_db)):
-    return crud.get_favorites(db=db)
+@app.get("/favorites/{user_id}")
+async def get_favorites(user_id: int, db: Session = Depends(get_db)):
+    db_movies = crud.get_favorites(db, user_id=user_id)
+    # pegando os ids dos filmes favoritados do banco de dados
+    tmdb_ids = [movie.tmdb_id for movie in db_movies]
+    filtro = []
+    if db_movies is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    for movie_id in tmdb_ids:
+        movie_api = get_json(
+            f"/movie/{movie_id}?language=en-US"
+        )
+        filtro.append({
+            'movie_id' : movie_api.get('id'),
+            'title' : movie_api.get('original_title'),
+            'sinopse' : movie_api.get('overview'),
+            'image' : movie_api.get('poster_path')
+        })        
+    return filtro
 
 ## USERS ##
-
 @app.get("/users", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
