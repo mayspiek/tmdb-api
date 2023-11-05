@@ -1,3 +1,5 @@
+# uvicorn pycine:app --reload
+
 from fastapi import FastAPI
 from tmdb import get_json
 from typing import List
