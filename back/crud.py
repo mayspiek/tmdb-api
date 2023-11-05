@@ -47,3 +47,11 @@ def favorite_movie(db: Session, tmdb_id: int, user_id: int):
 # List : para me retornar uma lista de filmes
 def get_favorites(db: Session, user_id: int) -> List[schemas.Movie]:
     return db.query(models.Movie).filter(models.Movie.user_id == user_id).all()
+
+def get_favorite_by_id(db: Session, tmdb_id: int, user_id: int):
+    return db.query(models.Movie).filter(models.Movie.tmdb_id == tmdb_id, models.Movie.user_id == user_id).first()
+
+def delete_favorite(db: Session, tmdb_id: int, user_id: int):
+    db.query(models.Movie).filter(models.Movie.tmdb_id == tmdb_id, models.Movie.user_id == user_id).delete()
+    db.commit()
+    return tmdb_id

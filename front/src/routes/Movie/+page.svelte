@@ -10,10 +10,6 @@
             throw new Error(text);
         }
     }
-    export function handleClick() {
-        promise = getFilmes();
-    }
-
     async function favoritarFilme(tmdb_id) {
         try {
             const res = await fetch(`http://localhost:8000/favorites/1/${tmdb_id}`, {
@@ -35,7 +31,7 @@
 
 </script>
 <div class="title flexCenter">
-    <button on:click={handleClick}> Get filmes </button>
+    <button on:click={getFilmes}> Get filmes </button>
     <h1>Lista de Filmes</h1>
 </div>
 {#await promise}
@@ -64,9 +60,6 @@
 
     .movies{
         text-align: center;
-    }
-    .title{
-        flex-direction: column;
     }
     button{ 
         margin: .3rem auto;

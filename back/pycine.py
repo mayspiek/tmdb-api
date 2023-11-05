@@ -128,6 +128,15 @@ async def get_favorites(user_id: int, db: Session = Depends(get_db)):
         })        
     return filtro
 
+##DELETAR FILMES DO FAVORITOS
+@app.delete("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
+def delete_favorite(user_id: int, tmdb_id: int, db: Session = Depends(get_db)):
+    db_movie = crud.get_favorite_by_id(db, user_id=user_id, tmdb_id=tmdb_id)
+    if db_movie is None:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    crud.delete_favorite(db, user_id=user_id, tmdb_id=tmdb_id)
+    return db_movie
+
 ## USERS ##
 @app.get("/users", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
