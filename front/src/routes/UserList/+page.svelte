@@ -82,10 +82,6 @@
 </div>
 
 <style>
-    .content {
-        flex-wrap: wrap;
-        flex-direction: column;
-    }
 
     .information {
         justify-content: space-between;
