@@ -1,3 +1,6 @@
+<script>
+    import '../globals.css'
+</script>
 <div class="components-nav">
     <ul>
         <li><a href="/Movie">Movie</a></li>
