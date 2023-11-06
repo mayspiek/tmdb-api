@@ -8,7 +8,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     email = Column(String, unique=True, index=True)
-    password = Column(String)
+    hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     
     movies = relationship("Movie", back_populates="user")

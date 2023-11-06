@@ -18,7 +18,6 @@ def update_user(db: Session, user_id: int, user: schemas.UserCreate):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     db_user.name = user.name
     db_user.email = user.email
-    db_user.password = user.password
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -29,7 +28,8 @@ def delete_user(db: Session, user_id: int):
     return user_id
 
 def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(email=user.email, name=user.name, password=user.password)
+    fake_hashed_password = user.password + "notreallyhashed"
+    db_user = models.User(email=user.email, name=user.name, hashed_password=fake_hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
