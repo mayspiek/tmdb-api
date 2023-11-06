@@ -19,7 +19,7 @@
 
 </script>
 
-<div class="content flexCenter">
+<div class="title flexCenter">
     <button on:click={handleClick}> Get Users </button>
 
     {#await promise}
@@ -44,7 +44,7 @@
                     </p>
                 </div>
 
-                <div>
+                <div class="buttons">
                     <button
                         on:click={() => {
                             {
@@ -72,7 +72,18 @@
                     </button>
                     
                     <!-- TO DO -->
-                    <button> Update </button>
+                    <button on:click={()=>{
+                        const response = fetch(`localhost:8000/user/${user.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name: user.name,
+                                email: user.email,
+                                password: user.password})
+                        });
+                    }}> Update </button>
                 </div>
             </div>
         {/each}
@@ -91,4 +102,10 @@
         font-weight: bold;
         text-decoration: underline;
     }
+
+    .buttons{
+        display: inherit;
+        flex-direction: column;
+        gap: 5px;
+}
 </style>
