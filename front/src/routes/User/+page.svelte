@@ -93,7 +93,6 @@
                             <span>E-Mail: </span>
                             {user.email}
                         </p>
-                        {user.password}
                     </div>
 
                     <div class="buttons">
@@ -162,7 +161,7 @@
                     bind:value={usuarioParaAtualizar.email}
                 />
                 <input
-                    type="password"
+                    type="text"
                     name="password"
                     placeholder="password"
                     required
@@ -180,21 +179,21 @@
                 <input
                     type="text"
                     name="name"
-                    placeholder="User name"
+                    placeholder="Nome do Usuário"
                     required
                     autocomplete="off"
                 />
                 <input
                     type="text"
                     name="email"
-                    placeholder="Email"
+                    placeholder="exemplo@exemplo.com"
                     required
                     autocomplete="off"
                 />
                 <input
                     type="password"
                     name="password"
-                    placeholder="password"
+                    placeholder="Insira sua senha"
                     required
                     autocomplete="off"
                 />

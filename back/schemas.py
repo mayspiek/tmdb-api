@@ -9,6 +9,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    password: str
     is_active: bool
 
 class Movie(BaseModel):
