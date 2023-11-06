@@ -19,4 +19,4 @@ class Movie(BaseModel):
 
 
     class Config:
-        form_attributes = True
+        orm_mode = True

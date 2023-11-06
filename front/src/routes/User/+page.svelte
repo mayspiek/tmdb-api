@@ -10,33 +10,17 @@
         let formData = new FormData(e.target);
         let data = Object.fromEntries(formData.entries());
         if (usuarioParaAtualizar) {
-            try {
-                const userId = usuarioParaAtualizar.id;
-                const res = await fetch(`http://localhost:8000/users/${userId}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                });
-                // recebe o objeto json
-                const json = await res.json();
-                // transforma em string
-                resposta = JSON.stringify(json);
-                usuarioParaAtualizar = null;
-
-                if(res.ok){
-                    alert("Usuário ID [" + json.id + "] atualizado com sucesso");
-                    // limpa o formulario
-                    e.target.reset();
-                    handleClick();
-                }
-                
-            } catch (error) {
-                console.error(error);
-                alert("Ocorreu um erro ao atualizar o usuário.");
-            }
-
+            const userId = usuarioParaAtualizar.id;
+            const res = await fetch(`http://localhost:8000/users/${userId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            const json = await res.json();
+            resposta = JSON.stringify(json);
+            usuarioParaAtualizar = null;
         } else {
             const res = await fetch("http://localhost:8000/users", {
                 method: "POST",
@@ -47,10 +31,8 @@
             });
             const json = await res.json();
             resposta = JSON.stringify(json);
-            e.target.reset();
             console.log(json);
-            console.log(res);
-            console.log(res.body);
+            e.target.reset();
         }
     }
 
@@ -81,7 +63,6 @@
         usuarioParaAtualizar = user;
         mostrarFormulario = true;
         mostrarUserList = false;
-        e.target.reset();
     }
 </script>
 
@@ -113,6 +94,7 @@
                             {user.email}
                         </p>
                     </div>
+
                     <div class="buttons">
                         <button
                             on:click={() => {
@@ -165,7 +147,7 @@
                 <input
                     type="text"
                     name="name"
-                    placeholder="Nome do Usuário"
+                    placeholder="User name"
                     required
                     autocomplete="off"
                     bind:value={usuarioParaAtualizar.name}
@@ -173,7 +155,7 @@
                 <input
                     type="text"
                     name="email"
-                    placeholder="exemplo@exemplo.com"
+                    placeholder="Email"
                     required
                     autocomplete="off"
                     bind:value={usuarioParaAtualizar.email}
@@ -181,7 +163,7 @@
                 <input
                     type="text"
                     name="password"
-                    placeholder="Insira sua senha"
+                    placeholder="password"
                     required
                     autocomplete="off"
                     bind:value={usuarioParaAtualizar.password}
@@ -191,7 +173,7 @@
         </div>
     {:else}
         <h2>Novo Usuário</h2>
-        <p class="res">{resposta}</p>
+        <p>{resposta}</p>
         <div class="content flexCenter">
             <form class="crud" on:submit|preventDefault={sendForm}>
                 <input
@@ -215,7 +197,6 @@
                     required
                     autocomplete="off"
                 />
-                
                 <button type="submit">Adicionar Usuário</button>
             </form>
         </div>
