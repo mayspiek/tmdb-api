@@ -16,15 +16,15 @@
     }
 </script>
 
-<div class="content flexCenter">
+<div class="title flexCenter">
     <button on:click={handleClick}> Get Favorites </button>
     <h1>Lista de Favoritos</h1>
     {#await promise}
         <p>...waiting</p>
     {:then favorites}
-        {#each favorites as favorite}
-            <div class="movies boxBorder flexCenter">
-                <div class="moviesWrapper">
+        <div class="content">
+            {#each favorites as favorite}
+                <div class="movies boxBorder">
                     <button
                         on:click={() => {
                             {
@@ -40,7 +40,8 @@
                                         alert(
                                             `"${data.tmdb_id}" Deletado com sucesso`
                                         );
-                                        handleClick();                                    })
+                                        handleClick();
+                                    })
                                     .catch((error) => {
                                         alert(error.message);
                                     });
@@ -67,8 +68,8 @@
                         />
                     </p>
                 </div>
-            </div>
-        {/each}
+            {/each}
+        </div>
     {:catch error}
         <p style="color: red">{error.message}</p>
     {/await}
@@ -77,9 +78,10 @@
 <style>
     .movies {
         width: 50%;
-    }
-
-    .moviesWrapper {
         text-align: center;
+    }
+    .content {
+        flex-wrap: wrap;
+        display: inherit;
     }
 </style>

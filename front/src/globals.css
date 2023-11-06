@@ -31,8 +31,3 @@ form input {
 .title{
     flex-direction: column;
 }
-
-.content {
-    flex-wrap: wrap;
-    flex-direction: column;
-}
