@@ -9,6 +9,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    password: str
     is_active: bool
 
 class Movie(BaseModel):
@@ -18,4 +19,4 @@ class Movie(BaseModel):
 
 
     class Config:
-        orm_mode = True
+        form_attributes = True
