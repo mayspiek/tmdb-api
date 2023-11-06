@@ -49,7 +49,8 @@ def get_favorites(db: Session, user_id: int) -> List[schemas.Movie]:
     return db.query(models.Movie).filter(models.Movie.user_id == user_id).all()
 
 def get_favorite_by_id(db: Session, tmdb_id: int, user_id: int):
-    return db.query(models.Movie).filter(models.Movie.tmdb_id == tmdb_id, models.Movie.user_id == user_id).first()
+    movie = db.query(models.Movie).filter(models.Movie.user_id == user_id).filter(models.Movie.tmdb_id == tmdb_id).first()
+    return movie
 
 def delete_favorite(db: Session, tmdb_id: int, user_id: int):
     db.query(models.Movie).filter(models.Movie.tmdb_id == tmdb_id, models.Movie.user_id == user_id).delete()
