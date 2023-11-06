@@ -107,7 +107,7 @@ models.Base.metadata.create_all(bind=engine)
 def favorite_movie(user_id:int, tmdb_id:int, db: Session = Depends(get_db)):
     return crud.favorite_movie(db=db, user_id = user_id, tmdb_id=tmdb_id)
 
-# PEGA TODOS OS FILMES FAVORITADOS
+# PEGA TODOS OS FILMES FAVORITADOS DO USUÁRIO
 @app.get("/favorites/{user_id}")
 async def get_favorites(user_id: int, db: Session = Depends(get_db)):
     db_movies = crud.get_favorites(db, user_id=user_id)
@@ -127,6 +127,14 @@ async def get_favorites(user_id: int, db: Session = Depends(get_db)):
             'image' : movie_api.get('poster_path')
         })        
     return filtro
+
+@app.get("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
+def get_favorite_by_id(user_id: int, tmdb_id: int, db: Session = Depends(get_db)):
+    db_movie = crud.get_favorite_by_id(db, user_id=user_id, tmdb_id=tmdb_id)
+    if db_movie is not None:
+        return db_movie
+    else:
+        raise HTTPException(status_code=404, detail="Movie not found")
 
 ##DELETAR FILMES DO FAVORITOS
 @app.delete("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)

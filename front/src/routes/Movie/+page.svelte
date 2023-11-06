@@ -12,20 +12,35 @@
     }
     async function favoritarFilme(tmdb_id) {
         try {
-            const res = await fetch(`http://localhost:8000/favorites/1/${tmdb_id}`, {
-                method: "POST",
+            // verifica se o filme já está favoritado
+            const verificarFavoritoRes = await fetch(`http://localhost:8000/favorites/1/${tmdb_id}`, {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            if (res.ok) {
-                alert("Filme favoritado com sucesso!");
-            } else {
-                alert("Falha ao favoritar o filme");
+            if (verificarFavoritoRes.ok) {
+                // Se a verificação for bem-sucedida, o filme já está favoritado
+                alert("Este filme já foi favoritado anteriormente.");
+            } else{
+                // se nao, ele faz o post para favoritar
+                const res = await fetch(`http://localhost:8000/favorites/1/${tmdb_id}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                
+                if (res.ok) {
+                    alert("Filme favoritado com sucesso!");
+                } else {
+                    alert("Falha ao favoritar o filme");
+                }
             }
         } catch (error) {
-            console.error(error);
             alert("Ocorreu um erro ao favoritar o filme.");
+            console.error(error);
+            
         }
     }
 
