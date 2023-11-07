@@ -37,12 +37,23 @@ Certifique-se de que você atende a todos os pré-requisitos antes de prosseguir
   nvm use 20
 ```
 
-3. __Instale as dependências Python__
+3. __Crie um ambiente virtual do Python__
 ```bash
-pip install uvicorn fastapi requests sqlalchemy
+python -m venv venv
+
+# PARA WINDOWS
+venv\Scripts\activate
+
+# PARA macOS E LINUX
+source venv/bin/activate
 ```
 
-4. __Navegue até o diretório front e instale as dependências do Node.js__
+4. __Instale as dependências do Python__
+```bash
+pip install -r requirements.txt
+```
+
+5. __Navegue até o diretório front e instale as dependências do Node.js__
 ```bash
 cd front
 npm install
