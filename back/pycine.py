@@ -72,7 +72,7 @@ models.Base.metadata.create_all(bind=engine)
 ## MOVIES
 
 # get movies from API and return a list of movies
-@app.get("/filmes")
+@app.get("/movies")
 async def filmes_populares():
     data = get_json(
         "/discover/movie", "?sort_by=vote_count.desc"
