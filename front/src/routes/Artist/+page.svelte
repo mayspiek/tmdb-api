@@ -1,7 +1,20 @@
 <script>
+    import { onMount } from "svelte";
+
     let promise = "";
     let nameArtist = "";
-    async function getArtista(name) {
+
+    async function getArtists(){
+        const res = await fetch(`http://localhost:8000/artists`);
+        const text = await res.json();
+        if (res.ok) {
+            return text;
+        } else {
+            throw new Error(text);
+        }
+    }
+
+    async function searchArtist(name) {
         // faz um request GET para endpoint /filmes
         const res = await fetch(`http://localhost:8000/artistas/${name}`);
         const text = await res.json();
@@ -11,15 +24,25 @@
             throw new Error(text);
         }
     }
-    function handleClick() {
-        return (promise = getArtista(nameArtist));
+    function search() {
+        return (promise = searchArtist(nameArtist));
     }
+
+    function handleClick() {
+        return promise = getArtists();
+    }
+
+    onMount(() => {
+        promise = getArtists();
+    });
 </script>
+
 
 <div class="content flexCenter">
     <form action="">
         <input bind:value={nameArtist} type="text" />
-        <button on:click={handleClick}> Get Artistas </button>
+        <button on:click={search}> Procurar </button>
+        <button on:click={handleClick}>Todos Artistas</button>
     </form>
 
     {#await promise}
