@@ -112,7 +112,6 @@ async def artists_populares():
     )
     results = data['results']
     filtro = []
-    print(results)
     for artist in results:
         artist_id = get_json("/person", f"/{artist['id']}?language=en-US")
         filtro.append({
