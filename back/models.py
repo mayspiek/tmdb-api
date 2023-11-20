@@ -12,7 +12,8 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     
     movies = relationship("Movie", back_populates="user")
-    
+    artists = relationship("Artist", back_populates="user")
+
 # filmes favoritos 
 class Movie(Base):
     __tablename__ = "movies"
@@ -22,4 +23,15 @@ class Movie(Base):
     
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="movies")
+
+# filmes favoritos 
+class Artist(Base):
+    __tablename__ = "artists"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tmdb_artist_id = Column(Integer)
+    
+    user_id = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User", back_populates="artists")
+
     

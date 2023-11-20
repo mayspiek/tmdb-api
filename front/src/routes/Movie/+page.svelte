@@ -2,7 +2,7 @@
     let promise = getFilmes();
     async function getFilmes() {
         // faz um request GET para endpoint /filmes
-        const res = await fetch(`http://localhost:8000/filmes`);
+        const res = await fetch(`http://localhost:8000/movies`);
         const text = await res.json();
         if (res.ok) {
             return text;
@@ -13,7 +13,7 @@
     async function favoritarFilme(tmdb_id) {
         try {
             // verifica se o filme já está favoritado
-            const verificarFavoritoRes = await fetch(`http://localhost:8000/favorites/1/${tmdb_id}`, {
+            const verificarFavoritoRes = await fetch(`http://localhost:8000/favorites/movies/1/${tmdb_id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -24,7 +24,7 @@
                 alert("Este filme já foi favoritado anteriormente.");
             } else{
                 // se nao, ele faz o post para favoritar
-                const res = await fetch(`http://localhost:8000/favorites/1/${tmdb_id}`, {
+                const res = await fetch(`http://localhost:8000/favorites/movies/1/${tmdb_id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

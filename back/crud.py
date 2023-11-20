@@ -35,6 +35,8 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+# movies methods
+
 def favorite_movie(db: Session, tmdb_id: int, user_id: int):
     db_movie = db.query(models.Movie).filter(models.Movie.tmdb_id == tmdb_id).first()
     if db_movie is None:
@@ -56,3 +58,30 @@ def delete_favorite(db: Session, tmdb_id: int, user_id: int):
     db.query(models.Movie).filter(models.Movie.tmdb_id == tmdb_id, models.Movie.user_id == user_id).delete()
     db.commit()
     return tmdb_id
+
+# artists methods
+
+# favorite artist
+def favorite_artist(db: Session, tmdb_artist_id: int, user_id: int):
+    db_artist = db.query(models.Artist).filter(models.Artist.tmdb_artist_id == tmdb_artist_id).first()
+    if db_artist is None:
+        db_artist = models.Artist(tmdb_artist_id = tmdb_artist_id, user_id=user_id)
+        db.add(db_artist)
+        db.commit()
+        db.refresh(db_artist)
+    return db_artist
+
+# get list of favorite artists
+def get_favorites_artists(db: Session, user_id: int) -> List[schemas.Artist]:
+    return db.query(models.Artist).filter(models.Artist.user_id == user_id).all()
+
+# get artist favorited by user
+def get_favorite_artist_by_id(db: Session, tmdb_artist_id: int, user_id: int):
+    artist = db.query(models.Artist).filter(models.Artist.user_id == user_id).filter(models.Artist.tmdb_artist_id == tmdb_artist_id).first()
+    return artist
+
+# delete artist favorited by user
+def delete_favorite_artist(db: Session, tmdb_artist_id: int, user_id: int):
+    db.query(models.Artist).filter(models.Artist.tmdb_artist_id == tmdb_artist_id, models.Artist.user_id == user_id).delete()
+    db.commit()
+    return tmdb_artist_id

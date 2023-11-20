@@ -2,7 +2,7 @@
     import "../../globals.css";
     let promise = getFavorites();
     async function getFavorites() {
-        const res = await fetch(`http://localhost:8000/favorites/1`);
+        const res = await fetch(`http://localhost:8000/favorites/movies/1`);
         const text = await res.json();
         if (res.ok) {
             return text;
@@ -29,7 +29,7 @@
                         on:click={() => {
                             {
                                 fetch(
-                                    `http://localhost:8000/favorites/1/${favorite.movie_id}`,
+                                    `http://localhost:8000/favorites/movies/1/${favorite.movie_id}`,
                                     {
                                         method: "DELETE",
                                     }

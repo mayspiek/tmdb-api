@@ -51,40 +51,6 @@ async def find_filmes_artista(personId: int):
 
 # ========================================================
 
-@app.get("/filmes")
-async def filmes_populares():
-    data = get_json(
-        "/discover/movie", "?sort_by=vote_count.desc"
-    )
-    results = data['results']
-    filtro = []
-    for movie in results:
-        filtro.append({"title": movie['original_title'],
-                       "image": f"https://image.tmdb.org/t/p/w185{movie['poster_path']}",
-                       "tmdb_id": movie['id']})
-    return filtro
-
-@app.get("/artistas/{name}")
-async def get_artista(name: str):
-    artist_name = get_json(
-        "/search/person", f"?query={name}&language=en-US"
-    )
-
-    results = artist_name['results']
-    filtro = []
-
-    for artist in results:
-        artist_id = get_json("/person", f"/{artist['id']}?language=en-US")
-        filtro.append({
-            'id': artist_id['id'],
-            "name": artist_id['name'],
-            'rank': artist_id['popularity'],
-            'biography': artist_id['biography'],
-            "profile_path": artist_id['profile_path']
-        })
-    filtro.sort(reverse=True, key=lambda artist:artist['rank'])
-    return filtro
-
 # USERS
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
@@ -102,13 +68,30 @@ def get_db():
 
 models.Base.metadata.create_all(bind=engine)
 
+
+## MOVIES
+
+# get movies from API and return a list of movies
+@app.get("/movies")
+async def filmes_populares():
+    data = get_json(
+        "/discover/movie", "?sort_by=vote_count.desc"
+    )
+    results = data['results']
+    filtro = []
+    for movie in results:
+        filtro.append({"title": movie['original_title'],
+                       "image": f"https://image.tmdb.org/t/p/w185{movie['poster_path']}",
+                       "tmdb_id": movie['id']})
+    return filtro
+
 ## favorita o filme
-@app.post("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
+@app.post("/favorites/movies/{user_id}/{tmdb_id}", response_model=schemas.Movie)
 def favorite_movie(user_id:int, tmdb_id:int, db: Session = Depends(get_db)):
     return crud.favorite_movie(db=db, user_id = user_id, tmdb_id=tmdb_id)
 
 # PEGA TODOS OS FILMES FAVORITADOS DO USUÁRIO
-@app.get("/favorites/{user_id}")
+@app.get("/favorites/movies/{user_id}")
 async def get_favorites(user_id: int, db: Session = Depends(get_db)):
     db_movies = crud.get_favorites(db, user_id=user_id)
     # pegando os ids dos filmes favoritados do banco de dados
@@ -128,7 +111,7 @@ async def get_favorites(user_id: int, db: Session = Depends(get_db)):
         })        
     return filtro
 
-@app.get("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
+@app.get("/favorites/movies/{user_id}/{tmdb_id}", response_model=schemas.Movie)
 def get_favorite_by_id(user_id: int, tmdb_id: int, db: Session = Depends(get_db)):
     db_movie = crud.get_favorite_by_id(db, user_id=user_id, tmdb_id=tmdb_id)
     if db_movie is not None:
@@ -137,7 +120,7 @@ def get_favorite_by_id(user_id: int, tmdb_id: int, db: Session = Depends(get_db)
         raise HTTPException(status_code=404, detail="Movie not found")
 
 ##DELETAR FILMES DO FAVORITOS
-@app.delete("/favorites/{user_id}/{tmdb_id}", response_model=schemas.Movie)
+@app.delete("/favorites/movies/{user_id}/{tmdb_id}", response_model=schemas.Movie)
 def delete_favorite(user_id: int, tmdb_id: int, db: Session = Depends(get_db)):
     db_movie = crud.get_favorite_by_id(db, user_id=user_id, tmdb_id=tmdb_id)
     if db_movie is None:
@@ -145,7 +128,78 @@ def delete_favorite(user_id: int, tmdb_id: int, db: Session = Depends(get_db)):
     crud.delete_favorite(db, user_id=user_id, tmdb_id=tmdb_id)
     return db_movie
 
+# ARTISTS
+
+# get list of artists from API passing name as a parameter and return a list of artists
+@app.get("/artists/{name}")
+async def get_artista(name: str):
+    artist_name = get_json(
+        "/search/person", f"?query={name}&language=en-US"
+    )
+
+    results = artist_name['results']
+    filtro = []
+
+    for artist in results:
+        artist_id = get_json("/person", f"/{artist['id']}?language=en-US")
+        filtro.append({
+            'id': artist_id['id'],
+            'name': artist_id['name'],
+            'rank': artist_id['popularity'],
+            'biography': artist_id['biography'],
+            "profile_path": artist_id['profile_path']
+        })
+    filtro.sort(reverse=True, key=lambda artist:artist['rank'])
+    return filtro
+
+# favorita o artista
+@app.post("/favorites/artists/{user_id}/{tmdb_artist_id}", response_model=schemas.Artist)
+def favorite_artist(user_id:int, tmdb_artist_id:int, db: Session = Depends(get_db)):
+    return crud.favorite_artist(db=db, user_id = user_id, tmdb_artist_id = tmdb_artist_id)
+
+# get artists favorited by user
+@app.get("/favorites/artists/{user_id}")
+async def get_favorites_artists(user_id: int, db: Session = Depends(get_db)):
+    db_artists = crud.get_favorites_artists(db, user_id=user_id)
+    # pegando os ids dos artistas favoritados do banco de dados
+    tmdb_ids = [artist.tmdb_artist_id for artist in db_artists]
+    filtro = []
+    if db_artists is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    for artist_id in tmdb_ids:
+        tmdb_api = get_json(
+            f"/person/{artist_id}?language=en-US"
+        )
+        filtro.append({
+            'artist_id' : tmdb_api.get('id'),
+            'name' : tmdb_api.get('name'),
+            'rank' : tmdb_api.get('popularity'),
+            'biography' : tmdb_api.get('biography'),
+            'image' : tmdb_api.get('profile_path')
+        })        
+    return filtro
+
+# get artist favorited by user
+@app.get("/favorites/artists/{user_id}/{tmdb_artist_id}", response_model=schemas.Artist)
+def get_favorite_artist_by_id(user_id: int, tmdb_artist_id: int, db: Session = Depends(get_db)):
+    db_artist = crud.get_favorite_artist_by_id(db, user_id = user_id, tmdb_artist_id = tmdb_artist_id)
+    if db_artist is not None:
+        return db_artist
+    else:
+        raise HTTPException(status_code=404, detail="Artist not found")
+    
+# delete artist favorited by user
+@app.delete("/favorites/artists/{user_id}/{tmdb_artist_id}", response_model=schemas.Artist)
+def delete_favorite(user_id: int, tmdb_artist_id: int, db: Session = Depends(get_db)):
+    db_artist = crud.get_favorite_artist_by_id(db, user_id=user_id, tmdb_artist_id = tmdb_artist_id)
+    if db_artist is None:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    crud.delete_favorite_artist(db, user_id=user_id, tmdb_artist_id = tmdb_artist_id)
+    return db_artist
+
 ## USERS ##
+
+# get all users
 @app.get("/users", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)

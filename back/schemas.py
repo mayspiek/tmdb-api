@@ -17,6 +17,10 @@ class Movie(BaseModel):
     tmdb_id: int
     user_id: int
 
+class Artist(BaseModel):
+    id: int
+    tmdb_artist_id: int
+    user_id: int
 
     class Config:
         orm_mode = True
