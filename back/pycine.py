@@ -25,32 +25,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ========================================================
-
-# ATIVIDADE 1
-
-@app.get("/filme/{title}")
-async def find_movie(title: str):
-    """ 
-    procura filmes pelo titulo e ordena pelos mais populares 
-    Exemplo: /filme/avatar
-    """
-    return {"title": title}
-
-# ========================================================
-
-# ATIVIDADE 2
-
-@app.get("/artista/filmes")
-async def find_filmes_artista(personId: int):
-    """ 
-    busca os filmes mais populares de um artista 
-    Exemplo: /artista/filmes?personId=1100
-    """
-    return {"id": personId}
-
-# ========================================================
-
 # USERS
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
@@ -129,6 +103,27 @@ def delete_favorite(user_id: int, tmdb_id: int, db: Session = Depends(get_db)):
     return db_movie
 
 # ARTISTS
+
+# get movies from API and return a list of movies
+@app.get("/artists")
+async def artists_populares():
+    data = get_json(
+        "/trending/person/week", "?language=en-US"
+    )
+    results = data['results']
+    filtro = []
+    print(results)
+    for artist in results:
+        artist_id = get_json("/person", f"/{artist['id']}?language=en-US")
+        filtro.append({
+            'id': artist_id['id'],
+            'name': artist_id['name'],
+            'rank': artist_id['popularity'],
+            'biography': artist_id['biography'],
+            "profile_path": artist_id['profile_path']
+        })
+    filtro.sort(reverse=True, key=lambda artist:artist['rank'])
+    return filtro
 
 # get list of artists from API passing name as a parameter and return a list of artists
 @app.get("/artists/{name}")
