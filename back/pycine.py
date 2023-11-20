@@ -59,6 +59,26 @@ async def filmes_populares():
                        "tmdb_id": movie['id']})
     return filtro
 
+# get list of movies from API passing title as a parameter and return a list of movies
+@app.get("/movies/{title}")
+async def get_movies(title: str):
+    movie_title = get_json(
+        "/search/movie", f"?query={title}&include_adult=true&language=en-US"
+    )
+
+    results = movie_title['results']
+    filtro = []
+
+    for movie in results:
+        movie_id = get_json("/movie", f"/{movie['id']}?language=en-US")
+        filtro.append({
+            'id': movie_id['id'],
+            'title': movie_id['title'],
+            'image': movie_id['poster_path'],
+        })
+    # filtro.sort(reverse=True, key=lambda artist:artist['rank'])
+    return filtro
+
 ## favorita o filme
 @app.post("/favorites/movies/{user_id}/{tmdb_id}", response_model=schemas.Movie)
 def favorite_movie(user_id:int, tmdb_id:int, db: Session = Depends(get_db)):
