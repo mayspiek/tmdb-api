@@ -1,5 +1,6 @@
 # uvicorn pycine:app --reload
 
+from pprint import pprint
 from fastapi import FastAPI
 from tmdb import get_json
 from typing import List
@@ -131,14 +132,17 @@ async def artists_populares():
         "/trending/person/week", "?language=en-US"
     )
     results = data['results']
+    # print(results)
     filtro = []
     for artist in results:
         artist_id = get_json("/person", f"/{artist['id']}?language=en-US")
+        pprint(artist_id)
         filtro.append({
             'id': artist_id['id'],
             'name': artist_id['name'],
             'rank': artist_id['popularity'],
             'biography': artist_id['biography'],
+            'birthday': artist_id['birthday'],
             "profile_path": artist_id['profile_path']
         })
     filtro.sort(reverse=True, key=lambda artist:artist['rank'])
@@ -161,6 +165,7 @@ async def get_artista(name: str):
             'name': artist_id['name'],
             'rank': artist_id['popularity'],
             'biography': artist_id['biography'],
+            'birthday': artist_id['birthday'],
             "profile_path": artist_id['profile_path']
         })
     filtro.sort(reverse=True, key=lambda artist:artist['rank'])
