@@ -132,11 +132,9 @@ async def artists_populares():
         "/trending/person/week", "?language=en-US"
     )
     results = data['results']
-    # print(results)
     filtro = []
     for artist in results:
         artist_id = get_json("/person", f"/{artist['id']}?language=en-US")
-        pprint(artist_id)
         filtro.append({
             'id': artist_id['id'],
             'name': artist_id['name'],
