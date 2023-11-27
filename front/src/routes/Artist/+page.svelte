@@ -3,7 +3,7 @@
 
     let promise = "";
     let nameArtist = "";
-
+    
     async function getArtists(){
         const res = await fetch(`http://localhost:8000/artists`);
         const text = await res.json();
@@ -24,6 +24,31 @@
             throw new Error(text);
         }
     }
+
+    async function favoriteArtist(art_id){
+        const verificaFavorito = await fetch(`http://localhost:8000/favorites/artists/1/${art_id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if(verificaFavorito){
+            alert("Este artista já foi favoritado anteriormente.");
+        } else {
+            const res = await fetch(`http://localhost:8000/favorites/artists/1/${art_id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (res.ok) {
+                alert("Artista favoritado com sucesso!");
+            } else {
+                alert("Falha ao favoritar o artista");
+            }
+        }
+    }
+
     function search() {
         return (promise = searchArtist(nameArtist));
     }
@@ -47,8 +72,12 @@
 
     {#await promise}
         <p>...waiting</p>
-    {:then artistas}
-        <h1>Lista de Artistas</h1>
+        {:then artistas}
+    {#if promise = getArtists()}
+        <h1>Artistas populares da Semana</h1>
+    {:else}
+        <h1>Artistas</h1>
+    {/if}
         {#each artistas as artista}
         <div class="artist boxBorder flexCenter">
             <p>{artista.id}</p>
@@ -58,6 +87,7 @@
                 alt=""
             />
             <p>{artista.biography}</p>
+            <button on:click={favoriteArtist(artista.id)}>Favoritar</button>
         </div>
         {/each}
     {:catch error}
