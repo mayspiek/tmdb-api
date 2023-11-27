@@ -73,9 +73,9 @@ async def get_movies(title: str):
     for movie in results:
         movie_id = get_json("/movie", f"/{movie['id']}?language=en-US")
         filtro.append({
-            'id': movie_id['id'],
+            'tmdb_id': movie_id['id'],
             'title': movie_id['title'],
-            'image': movie_id['poster_path'],
+            'image': f"https://image.tmdb.org/t/p/w185{movie_id['poster_path']}",
         })
     # filtro.sort(reverse=True, key=lambda artist:artist['rank'])
     return filtro
@@ -99,7 +99,7 @@ async def get_favorites(user_id: int, db: Session = Depends(get_db)):
             f"/movie/{movie_id}?language=en-US"
         )
         filtro.append({
-            'movie_id' : movie_api.get('id'),
+            'tmdb_id' : movie_api.get('id'),
             'title' : movie_api.get('original_title'),
             'sinopse' : movie_api.get('overview'),
             'image' : movie_api.get('poster_path')
@@ -191,8 +191,9 @@ async def get_favorites_artists(user_id: int, db: Session = Depends(get_db)):
             'artist_id' : tmdb_api.get('id'),
             'name' : tmdb_api.get('name'),
             'rank' : tmdb_api.get('popularity'),
+            'birthday': tmdb_api.get('birthday'),
             'biography' : tmdb_api.get('biography'),
-            'image' : tmdb_api.get('profile_path')
+            'image' : tmdb_api.get('profile_path'),
         })        
     return filtro
 

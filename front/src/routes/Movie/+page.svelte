@@ -1,5 +1,6 @@
 <script>
     let promise = getFilmes();
+    let nomeFilme = "";
     async function getFilmes() {
         // faz um request GET para endpoint /filmes
         const res = await fetch(`http://localhost:8000/movies`);
@@ -44,11 +45,29 @@
         }
     }
 
+    async function searchFilme(nomeFilme) {
+        const res = await fetch(`http://localhost:8000/movies/${nomeFilme}`);
+        const text = await res.json();
+        if (res.ok) {
+            return text;
+        } else {
+            throw new Error(text);
+        }
+    }
+
+    function search() {
+        return (promise = searchFilme(nomeFilme));
+    }
+
 </script>
 <div class="title flexCenter">
-    <button on:click={getFilmes}> Get filmes </button>
-    <h1>Lista de Filmes</h1>
+    <form action="">
+        <input bind:value={nomeFilme} type="text" />
+        <button on:click={search}> Procurar </button>
+        <button on:click={getFilmes}> Get filmes </button>
+    </form>
 </div>
+<h1>Lista de Filmes</h1>
 {#await promise}
     <p>...waiting</p>
 {:then filmes}
