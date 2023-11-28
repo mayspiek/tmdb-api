@@ -16,7 +16,7 @@
 
     async function searchArtist(name) {
         // faz um request GET para endpoint /filmes
-        const res = await fetch(`http://localhost:8000/artistas/${name}`);
+        const res = await fetch(`http://localhost:8000/artists/${name}`);
         const text = await res.json();
         if (res.ok) {
             return text;

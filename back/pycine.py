@@ -143,7 +143,7 @@ async def artists_populares():
             'birthday': artist_id['birthday'],
             "profile_path": artist_id['profile_path']
         })
-    filtro.sort(reverse=True, key=lambda artist:artist['rank'])
+    # filtro.sort(reverse=True, key=lambda artist:artist['rank'])
     return filtro
 
 # get list of artists from API passing name as a parameter and return a list of artists
@@ -211,7 +211,7 @@ def get_favorite_artist_by_id(user_id: int, tmdb_artist_id: int, db: Session = D
 def delete_favorite(user_id: int, tmdb_artist_id: int, db: Session = Depends(get_db)):
     db_artist = crud.get_favorite_artist_by_id(db, user_id=user_id, tmdb_artist_id = tmdb_artist_id)
     if db_artist is None:
-        raise HTTPException(status_code=404, detail="Movie not found")
+        raise HTTPException(status_code=404, detail="Artist not found")
     crud.delete_favorite_artist(db, user_id=user_id, tmdb_artist_id = tmdb_artist_id)
     return db_artist
 
