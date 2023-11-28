@@ -32,7 +32,7 @@
                 "Content-Type": "application/json",
             },
         });
-        if(verificaFavorito){
+        if(verificaFavorito.ok){
             alert("Este artista já foi favoritado anteriormente.");
         } else {
             const res = await fetch(`http://localhost:8000/favorites/artists/1/${art_id}`, {
@@ -80,8 +80,8 @@
     {/if}
         {#each artistas as artista}
         <div class="artist boxBorder flexCenter">
-            <p>{artista.id}</p>
-            <p>{artista.name}</p>
+            <p>Nome: {artista.name}</p> <span>Rank: {artista.rank}</span>
+            <p>Data de Nascimento: {artista.birthday}</p>
             <img
                 src="https://image.tmdb.org/t/p/w185/{artista.profile_path}"
                 alt=""
