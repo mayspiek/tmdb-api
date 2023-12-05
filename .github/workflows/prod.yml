@@ -1,0 +1,13 @@
+name: Deploy Pycine
+
+on:
+  push:
+    branches:
+      - GMS-WEBIV
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
