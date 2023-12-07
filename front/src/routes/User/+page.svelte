@@ -11,7 +11,7 @@
         let data = Object.fromEntries(formData.entries());
         if (usuarioParaAtualizar) {
             const userId = usuarioParaAtualizar.id;
-            const res = await fetch(`http://localhost:8000/users/${userId}`, {
+            const res = await fetch(`http://18.212.220.116:8000/users/${userId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -22,7 +22,7 @@
             resposta = JSON.stringify(json);
             usuarioParaAtualizar = null;
         } else {
-            const res = await fetch("http://localhost:8000/users", {
+            const res = await fetch("http://18.212.220.116:8000/users", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -38,7 +38,7 @@
 
     async function getUsers() {
         // envia o formulario no formato json
-        const res = await fetch("http://localhost:8000/users");
+        const res = await fetch("http://18.212.220.116:8000/users");
         const text = await res.json();
         if (res.ok) {
             return text;
@@ -100,7 +100,7 @@
                             on:click={() => {
                                 {
                                     fetch(
-                                        `http://localhost:8000/users/${user.id}`,
+                                        `http://18.212.220.116:8000/users/${user.id}`,
                                         {
                                             method: "DELETE",
                                         }

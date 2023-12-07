@@ -4,8 +4,12 @@
     let promise = "";
     let nameArtist = "";
     
+    onMount(async () => {
+        promise = getArtists();
+    });
+
     async function getArtists(){
-        const res = await fetch(`http://localhost:8000/artists`);
+        const res = await fetch(`http://18.212.220.116:8000/artists`);
         const text = await res.json();
         if (res.ok) {
             return text;
@@ -16,7 +20,7 @@
 
     async function searchArtist(name) {
         // faz um request GET para endpoint /filmes
-        const res = await fetch(`http://localhost:8000/artistas/${name}`);
+        const res = await fetch(`http://18.212.220.116:8000/artistas/${name}`);
         const text = await res.json();
         if (res.ok) {
             return text;
@@ -26,7 +30,7 @@
     }
 
     async function favoriteArtist(art_id){
-        const verificaFavorito = await fetch(`http://localhost:8000/favorites/artists/1/${art_id}`, {
+        const verificaFavorito = await fetch(`http://18.212.220.116:8000/favorites/artists/1/${art_id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -35,7 +39,7 @@
         if(verificaFavorito.ok){
             alert("Este artista já foi favoritado anteriormente.");
         } else {
-            const res = await fetch(`http://localhost:8000/favorites/artists/1/${art_id}`, {
+            const res = await fetch(`http://18.212.220.116:8000/favorites/artists/1/${art_id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

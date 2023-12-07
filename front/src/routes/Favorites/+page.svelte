@@ -1,9 +1,10 @@
 <script>
     import "../../globals.css";
+
     let promise = getFavoriteMovies();
     let promise2 = getFavoriteArtists();
     async function getFavoriteMovies() {
-        const res = await fetch(`http://localhost:8000/favorites/movies/1`);
+        const res = await fetch(`http://18.212.220.116:8000/favorites/movies/1`);
         const text = await res.json();
         if (res.ok) {
             return text;
@@ -13,7 +14,7 @@
     }
 
     async function getFavoriteArtists() {
-        const res = await fetch(`http://localhost:8000/favorites/artists/1`);
+        const res = await fetch(`http://18.212.220.116:8000/favorites/artists/1`);
         const text = await res.json();
         if (res.ok) {
             return text;
@@ -60,7 +61,7 @@
                         on:click={() => {
                             {
                                 fetch(
-                                    `http://localhost:8000/favorites/movies/1/${movie.tmdb_id}`,
+                                    `http://18.212.220.116:8000/favorites/movies/1/${movie.tmdb_id}`,
                                     {
                                         method: "DELETE",
                                     }
@@ -108,7 +109,7 @@
 
                     <button on:click={()=>{
                         {
-                            fetch(`http://localhost:8000/favorites/artists/1/${artist.artist_id}`, {
+                            fetch(`http://18.212.220.116:8000/favorites/artists/1/${artist.artist_id}`, {
                                 method: "DELETE",
                             })
                                 .then((response) => response.json())
