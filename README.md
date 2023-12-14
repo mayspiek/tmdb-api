@@ -8,6 +8,14 @@ Este é um projeto Python que combina o poder do framework Svelte para o fronten
 - Gabriela Marques
 [![Github Badge](https://img.shields.io/badge/-Github-000?style=flat-square&logo=Github&logoColor=white&link=https://github.com/gabrielamarqs)](https://github.com/gabrielamarqs) [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/gabriela-marques-dos-santos-899092161/)](https://www.linkedin.com/in/gabriela-marques-dos-santos-899092161/) [![](https://img.shields.io/badge/Gmail-red?style=flat-square&logo=gmail&logoColor=white)](mailto:margabrielaqs@gmail.com)
 
+![image](https://github.com/mayspiek/tmdb-api/assets/79992764/40e26a55-0fd1-4451-b391-9aad5040a524)
+![image](https://github.com/mayspiek/tmdb-api/assets/79992764/884ef7b1-f2d6-44d6-9220-d803e8ea75c7)
+![image](https://github.com/mayspiek/tmdb-api/assets/79992764/666ec517-cd36-45fd-a97a-0bfb6b5e880f)
+![image](https://github.com/mayspiek/tmdb-api/assets/79992764/1974806b-9767-4468-976d-8e27bdfdec2e)
+![image](https://github.com/mayspiek/tmdb-api/assets/79992764/1885940a-123e-4795-9546-24ae5c2b6f10)
+
+
+
 ## Requisitos
 - Python 3.x
 - Node.js 20.x (Recomendado)
